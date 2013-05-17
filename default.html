@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>JSadakhata</title>
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+<script type="text/javascript" src="JS/jquery.min.js"></script>
+<script type="text/javascript" src="JS/jquery-ui.min.js"></script>
+<script type="text/javascript" src="JS/trie.js"></script>
+<script type="text/javascript" src="JS/jsDb.js"></script>
+<link rel="stylesheet" href="/resources/demos/style.css" />
+<script>
+
+
+$(function() {
+function split( val ) {
+	return val.split( / \s*/ );
+}
+function extractLast( term ) {
+	return split( term ).pop();
+}
+$( "#tags" )
+// don't navigate away from the field on tab when selecting an item
+	.bind( "keydown", function( event ) {
+		if ( event.keyCode === $.ui.keyCode.TAB  && $( this ).data( "ui-autocomplete" ).menu.active ) {
+			event.preventDefault();
+		}
+	})
+	.autocomplete({
+		
+		minLength: 1,
+		
+		delay: 1,
+		
+		autoFill: true,
+		
+		
+		
+		
+		
+		source: function( request, response ) {
+			// delegate back to autocomplete, but extract the last term
+			//response( $.ui.autocomplete.filter(availableTags, extractLast( request.term ) ) );
+			//console.log(extractLast(request.term));
+			//var result = [];
+			//result.push(convert(extractLast(request.term)));
+			response(convert(extractLast(request.term)));
+		},
+		
+		
+		focus: function(event, ui) {
+			// prevent value inserted on focus
+			return false;
+		},
+		
+		
+		
+		
+		select: function( event, ui ) {
+			var terms = split( this.value );
+			// remove the current input
+			terms.pop();
+			// add the selected item
+			terms.push( ui.item.value );
+			//console.log(terms);
+			
+			this.value = terms.join(" ");
+			return false;
+		}
+	});
+});
+
+
+</script>
+</head>
+<body>
+    <div class="ui-widget">
+    	<center>
+        	<textarea id="tags"></textarea>
+        </center>
+    </div>
+</body>
+</html>
