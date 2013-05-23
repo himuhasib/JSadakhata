@@ -55,7 +55,7 @@ function find(str)
 	{
 		var ret = T.wordList[str];
 		if(ret == null)
-		{
+		{//can't find exact match, trying to find nearest one.
 			var dist = 100;
 			var temp;
 			for(key in T.wordList)
@@ -83,6 +83,7 @@ function hash(str)
 	str = str.replace(/e/g, 'a');
 	str = str.replace(/c/g, 's');
 	str = str.replace(/h/g, '');
+	str = str.replace(/o/g, '');
 	str = str.replace(/j/g, 'z');
 	return str;
 }
@@ -99,7 +100,6 @@ function minimum_edit_dist(s, t)
 	
 	function calc(i, j)
 	{
-		console.log(i+" "+j);
 		if(i<0) return j>0?j:0;
 		if(j<0) return i>0?i:0;
 		
@@ -124,34 +124,11 @@ function minimum_edit_dist(s, t)
 
 function convert(str)
 {
-	//alert(str);
+	if(str.length == 0) return [];
 	var result = find(str);
 	
 	if(result == null)
 		result = str;
 	
 	return result.split(",");
-	
-	/*
-	str = str.split(/ /);
-	//alert(str);
-	
-	var result = "";
-	var value;
-	for(var i=0; i<str.length; i++)
-	{
-		value = find(str[i]);
-		if(value == null)
-			value = str[i];
-		else
-			value = value.split(",")[0];
-		result = result + value + " ";
-	}
-	
-	return result;
-	
-	*/
 }
-
-
-

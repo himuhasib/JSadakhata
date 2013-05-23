@@ -7,10 +7,9 @@
 <script type="text/javascript" src="JS/jquery.min.js"></script>
 <script type="text/javascript" src="JS/jquery-ui.min.js"></script>
 <script type="text/javascript" src="JS/trie.js"></script>
-<script type="text/javascript" src="JS/jsDb.js"></script>
+<script type="text/javascript" src="JS/jsDB.js"></script>
 <link rel="stylesheet" href="/resources/demos/style.css" />
 <script>
-
 
 $(function() {
 function split( val ) {
@@ -38,11 +37,8 @@ $( "#tags" )
 		
 		source: function( request, response ) {
 			// delegate back to autocomplete, but extract the last term
-			//response( $.ui.autocomplete.filter(availableTags, extractLast( request.term ) ) );
-			//console.log(extractLast(request.term));
-			//var result = [];
-			//result.push(convert(extractLast(request.term)));
 			response(convert(extractLast(request.term)));
+			//response([]);
 		},
 		
 		
