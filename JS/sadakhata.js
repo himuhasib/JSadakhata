@@ -69,11 +69,20 @@ function find(str)
 				
 			}
 		}
+		ret = ret.split(",");
+		var parseAvro = OmicronLab.Avro.Phonetic.parse(str);
+		for(i=0; i<ret.length; i++)
+			if(parseAvro == ret[i])
+				break;
+		
+		if(i == ret.length)
+			ret.push(parseAvro);
+		
 		return ret;
 	}
 	else
 	{
-		return null;
+		return [OmicronLab.Avro.Phonetic.parse(str)];
 	}
 	
 }
@@ -127,8 +136,5 @@ function convert(str)
 	if(str.length == 0) return [];
 	var result = find(str);
 	
-	if(result == null)
-		result = str;
-	
-	return result.split(",");
+	return result;
 }
