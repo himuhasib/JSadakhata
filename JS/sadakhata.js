@@ -51,9 +51,10 @@ function find(str)
 		T = T.children[hashed[i]];				
 	}
 	
+	var ret;
+	
 	if(i == hashed.length)
 	{
-		var ret;
 		if(!(str in T.wordList))
 		{//can't find exact match, trying to find nearest one.
 			var dist = 100;
@@ -88,17 +89,19 @@ function find(str)
 		{
 			ret = [parseAvro];
 		}
-		return ret;
 	}
 	else
 	{
-		return [OmicronLab.Avro.Phonetic.parse(str)];
+		ret = [OmicronLab.Avro.Phonetic.parse(str)];
 	}
+	ret.push(str);
+	return ret;
 	
 }
 
 function hash(str)
 {
+	str = str.replace(/aa/g, 'a');
 	str = str.replace(/e/g, 'a');
 	str = str.replace(/c/g, 's');
 	str = str.replace(/h/g, '');
@@ -146,4 +149,12 @@ function convert(str)
 	if(str.length == 0) return [];
 	var result = find(str);
 	return result;
+}
+
+function getPos(end, str)
+{
+	var start = end;
+	while(start > 0 && str[start-1] != ' ')
+		start--;
+	return {"start":start, "end":end};
 }

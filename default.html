@@ -1,7 +1,7 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>JSadakhata</title>
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
 <script type="text/javascript" src="JS/jquery.min.js"></script>
@@ -9,21 +9,52 @@
 <script type="text/javascript" src="JS/sadakhata.js"></script>
 <script type="text/javascript" src="JS/jsDB.js"></script>
 <script type="text/javascript" src="JS/avro.js"></script>
+<script type="text/javascript" src="JS/jquery.caret.1.02.js"></script>
 <link rel="stylesheet" href="/resources/demos/style.css" />
-<script>
 
+
+
+</head>
+<body>
+    <div class="ui-widget">
+    	<center>
+        	<textarea id="tags"></textarea>
+        </center>
+    </div>
+</body>
+</html>
+
+<script>
 $(function() {
+	
 function split( val ) {
 	return val.split( / \s*/ );
 }
 function extractLast( term ) {
 	return split( term ).pop();
 }
-$( "#tags" )
+
+var elm = $("#tags");
+
+elm
 // don't navigate away from the field on tab when selecting an item
 	.bind( "keydown", function( event ) {
 		if ( event.keyCode === $.ui.keyCode.TAB  && $( this ).data( "ui-autocomplete" ).menu.active ) {
 			event.preventDefault();
+		}
+	})
+	
+	.bind("keyup", function(event){
+		if(event.keyCode == 32 && elm.val().length > 1)
+		{
+			var obj = getPos(elm.caret().start-2, elm.val());
+			var val = convert(elm.val().substr(obj.start, obj.end-obj.start+1))[0];
+			elm.val(elm.val().substr(0, obj.start) + val + elm.val().substr(obj.end+1));
+			
+			var t = obj.start + val.length + 1;
+			elm.caret(t, t);
+			
+				
 		}
 	})
 	.autocomplete({
@@ -37,9 +68,16 @@ $( "#tags" )
 		
 		
 		source: function( request, response ) {
-			// delegate back to autocomplete, but extract the last term
-			response(convert(extractLast(request.term)));
-			//response([]);
+			var word = "";
+			for(var i=elm.caret().start-1; i>-1 && request.term[i] != ' '; i--)
+			{
+				//console.log("word was " +word); 
+				word = request.term[i] + word;
+			}
+			
+			//console.log(word);
+			
+			response(convert(word));
 		},
 		
 		
@@ -52,6 +90,7 @@ $( "#tags" )
 		
 		
 		select: function( event, ui ) {
+			/*
 			var terms = split( this.value );
 			// remove the current input
 			terms.pop();
@@ -60,19 +99,23 @@ $( "#tags" )
 			//console.log(terms);
 			
 			this.value = terms.join(" ");
+			this.value += " ";
+			*/
+			
+			var obj = getPos(elm.caret().start - 1, this.value);
+			
+			
+			this.value = this.value.substr(0, obj.start) + ui.item.value + " " + this.value.substr(obj.end+1);
+			var t = obj.start + ui.item.value.length + 1;
+			elm.caret(t, t);
 			return false;
 		}
 	});
+	
 });
 
 
 </script>
-</head>
-<body>
-    <div class="ui-widget">
-    	<center>
-        	<textarea id="tags"></textarea>
-        </center>
-    </div>
-</body>
-</html>
+
+
+
