@@ -36,7 +36,7 @@ function find(str)
 		return null;
 	}
 	
-	var hashed = hash(str);
+	var hashed = hash(str.toLowerCase());
 	
 	var T = head;
 	var i;
@@ -53,8 +53,8 @@ function find(str)
 	
 	if(i == hashed.length)
 	{
-		var ret = T.wordList[str];
-		if(ret == null)
+		var ret;
+		if(!(str in T.wordList))
 		{//can't find exact match, trying to find nearest one.
 			var dist = 100;
 			var temp;
@@ -69,15 +69,25 @@ function find(str)
 				
 			}
 		}
-		ret = ret.split(",");
+		else
+		{
+			ret = T.wordList[str];
+		}
 		var parseAvro = OmicronLab.Avro.Phonetic.parse(str);
-		for(i=0; i<ret.length; i++)
-			if(parseAvro == ret[i])
-				break;
-		
-		if(i == ret.length)
-			ret.push(parseAvro);
-		
+		if(ret != undefined)
+		{
+			ret = ret.split(",");
+			for(i=0; i<ret.length; i++)
+				if(parseAvro == ret[i])
+					break;
+			
+			if(i == ret.length)
+				ret.push(parseAvro);
+		}
+		else
+		{
+			ret = [parseAvro];
+		}
 		return ret;
 	}
 	else
@@ -135,6 +145,5 @@ function convert(str)
 {
 	if(str.length == 0) return [];
 	var result = find(str);
-	
 	return result;
 }
