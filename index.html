@@ -35,6 +35,28 @@
 
 <p>JSadakhata is a Javascript+HTML implemention of SADAKHATA. You just need to Download-&gt;unzip-&gt;Open <strong>sadakhata.html</strong>. It'll automatically opened with your default browser. Then write :)</p>
 
+<h2>For Developer</h2>
+
+<p>If you are a <em>Developer</em>(#respect) you can use this tool easily!!! In your HTML page, add these lines to in &lt;head&gt;&lt;/head&gt;</p>
+
+<pre><code>&lt;link rel="stylesheet" href="CSS/jquery-ui.css" /&gt;
+&lt;script type="text/javascript" src="JS/jquery.min.js"&gt;&lt;/script&gt;
+&lt;script type="text/javascript" src="JS/jquery-ui.min.js"&gt;&lt;/script&gt;
+&lt;script type="text/javascript" src="JS/sadakhata.js"&gt;&lt;/script&gt;
+&lt;script type="text/javascript" src="JS/jsDB.js"&gt;&lt;/script&gt;
+&lt;script type="text/javascript" src="JS/avro.js"&gt;&lt;/script&gt;
+&lt;script type="text/javascript" src="JS/jquery.caret.1.02.js"&gt;&lt;/script&gt;
+</code></pre>
+
+<p>Note: Keep the files in perfect directory.</p>
+
+<p>now Let You have a textarea/input field with id="inp". Then to Active sadakhata to this field add these lines in &lt;head&gt;&lt;/head&gt;</p>
+
+<pre><code>$(function() {
+    sadakhata($("#inp"));
+});
+</code></pre>
+
 <h3>Authors and Contributors</h3>
 
 <p>This JavaScript implemention is developed by Hasib Al Muhaimin(@himuhasib). The <a href="https://github.com/torifat/jsAvroPhonetic">jsAvroPhonetic</a> is forked from <a href="https://github.com/torifat" class="user-mention">@torifat</a>. </p>
