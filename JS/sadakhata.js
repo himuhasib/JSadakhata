@@ -101,12 +101,15 @@ function find(str)
 
 function hash(str)
 {
-	str = str.replace(/aa/g, 'a');
-	str = str.replace(/e/g, 'a');
-	str = str.replace(/c/g, 's');
-	str = str.replace(/h/g, '');
-	//str = str.replace(/o/g, '');
-	str = str.replace(/j/g, 'z');
+	/*
+	add "//" if you
+	*/
+	str = str.replace(/aa/g, 'a');	//don't use extra 'a' after 'a', like 'baan'
+	str = str.replace(/e/g, 'a');	//know the difference between 'e' and 'a'
+	str = str.replace(/c/g, 's');	//know the difference between 'c' and 's'
+	str = str.replace(/h/g, '');	//don't use extra 'h' and don't miss 'h'
+	//str = str.replace(/o/g, '');	//use 'o' perfectly
+	str = str.replace(/j/g, 'z');	//don't mess up 'j' and 'z'
 	return str;
 }
 
