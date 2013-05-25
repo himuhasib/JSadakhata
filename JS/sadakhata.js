@@ -105,7 +105,7 @@ function hash(str)
 	str = str.replace(/e/g, 'a');
 	str = str.replace(/c/g, 's');
 	str = str.replace(/h/g, '');
-	str = str.replace(/o/g, '');
+	//str = str.replace(/o/g, '');
 	str = str.replace(/j/g, 'z');
 	return str;
 }
