@@ -6,7 +6,7 @@ function node()
 	
 head = new node();
 	
-function insert(str, val)
+function a(str, val)
 {
 	if(str.length == 0)
 	{
