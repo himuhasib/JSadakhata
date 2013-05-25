@@ -161,3 +161,61 @@ function getPos(end, str)
 		start--;
 	return {"start":start, "end":end};
 }
+
+
+
+function sadakhata(elm){
+	elm.bind( "keydown", function( event ) {
+		if ( event.keyCode === $.ui.keyCode.TAB /*  && elm.data( "ui-autocomplete" ).menu.active */ ) {
+			event.preventDefault();
+		}
+		
+	}).bind("keyup", function(event){
+		if(event.keyCode == 32 && $(this).val().length > 1)
+		{
+			var obj = getPos(elm.caret().start-2, elm.val());
+			var val = convert(elm.val().substr(obj.start, obj.end-obj.start+1))[0];
+			elm.val(elm.val().substr(0, obj.start) + val + elm.val().substr(obj.end+1));
+			
+			var t = obj.start + val.length + 1;
+			elm.caret(t, t);
+			
+				
+		}
+	}).autocomplete({
+		
+		minLength: 1,
+		
+		delay: 1,
+		
+		
+		
+		
+		
+		source: function( request, response ) {
+			var word = "";
+			for(var i=elm.caret().start-1; i>-1 && request.term[i] != ' '; i--)
+			{
+				word = request.term[i] + word;
+			}
+			
+			response(convert(word));
+		},
+		
+		
+		focus: function(event, ui) {
+			return false;
+		},
+		
+		
+		
+		
+		select: function( event, ui ) {
+			var obj = getPos(elm.caret().start - 1, this.value);
+			this.value = this.value.substr(0, obj.start) + ui.item.value + " " + this.value.substr(obj.end+1);
+			var t = obj.start + ui.item.value.length + 1;
+			elm.caret(t, t);
+			return false;
+		}
+	});
+}

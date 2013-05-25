@@ -10,9 +10,6 @@
 <script type="text/javascript" src="JS/jsDB.js"></script>
 <script type="text/javascript" src="JS/avro.js"></script>
 <script type="text/javascript" src="JS/jquery.caret.1.02.js"></script>
-<!--<link rel="stylesheet" href="/resources/demos/style.css" />-->
-
-
 
 </head>
 <body>
@@ -26,93 +23,10 @@
 
 <script>
 $(function() {
-	
-function split( val ) {
-	return val.split( / \s*/ );
-}
-function extractLast( term ) {
-	return split( term ).pop();
-}
-
-var elm = $("#tags");
-
-elm
-// don't navigate away from the field on tab when selecting an item
-	.bind( "keydown", function( event ) {
-		if ( event.keyCode === $.ui.keyCode.TAB  && $( this ).data( "ui-autocomplete" ).menu.active ) {
-			event.preventDefault();
-		}
-	})
-	
-	.bind("keyup", function(event){
-		if(event.keyCode == 32 && elm.val().length > 1)
-		{
-			var obj = getPos(elm.caret().start-2, elm.val());
-			var val = convert(elm.val().substr(obj.start, obj.end-obj.start+1))[0];
-			elm.val(elm.val().substr(0, obj.start) + val + elm.val().substr(obj.end+1));
-			
-			var t = obj.start + val.length + 1;
-			elm.caret(t, t);
-			
-				
-		}
-	})
-	.autocomplete({
-		
-		minLength: 1,
-		
-		delay: 1,
-		
-		
-		
-		
-		
-		source: function( request, response ) {
-			var word = "";
-			for(var i=elm.caret().start-1; i>-1 && request.term[i] != ' '; i--)
-			{
-				//console.log("word was " +word); 
-				word = request.term[i] + word;
-			}
-			
-			//console.log(word);
-			
-			response(convert(word));
-		},
-		
-		
-		focus: function(event, ui) {
-			// prevent value inserted on focus
-			return false;
-		},
-		
-		
-		
-		
-		select: function( event, ui ) {
-			/*
-			var terms = split( this.value );
-			// remove the current input
-			terms.pop();
-			// add the selected item
-			terms.push( ui.item.value );
-			//console.log(terms);
-			
-			this.value = terms.join(" ");
-			this.value += " ";
-			*/
-			
-			var obj = getPos(elm.caret().start - 1, this.value);
-			
-			
-			this.value = this.value.substr(0, obj.start) + ui.item.value + " " + this.value.substr(obj.end+1);
-			var t = obj.start + ui.item.value.length + 1;
-			elm.caret(t, t);
-			return false;
-		}
-	});
-	
+	sadakhata($("#tags"));
+	//sadakhata($("#tags2"));
 });
+
 
 
 </script>
