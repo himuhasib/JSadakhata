@@ -22,8 +22,6 @@
 */
 
 
-
-
 function node()
 {
 	this.wordList = {};
@@ -63,7 +61,7 @@ function find(str)
 	}
 	
 	var hashed = hash(str.toLowerCase());
-	
+	var parseAvro = OmicronLab.Avro.Phonetic.parse(str);
 	var T = head;
 	var i;
 	
@@ -100,15 +98,10 @@ function find(str)
 		{
 			ret = T.wordList[str];
 		}
-		var parseAvro = OmicronLab.Avro.Phonetic.parse(str);
 		if(ret != undefined)
 		{
 			ret = ret.split(",");
-			for(i=0; i<ret.length; i++)
-				if(parseAvro == ret[i])
-					break;
-			
-			if(i == ret.length)
+			if(!in_ara(ret, parseAvro))
 				ret.push(parseAvro);
 		}
 		else
@@ -118,11 +111,47 @@ function find(str)
 	}
 	else
 	{
-		ret = [OmicronLab.Avro.Phonetic.parse(str)];
+		var suffixes = {"ta":"টা", "tar":"টার", "ti":"টি", "tir":"টির", "khana":"খানা", "khani":"খানি", "gulo":"গুলো", "guli":"গুলি", "er":"ের", "na":"না"};
+		for(var s in suffixes)
+		{
+			if(new RegExp(s + "$", "i").test(str))
+			{
+				hashed = str.substr(0, str.length - s.length);
+				ret = find(hashed);
+				ret.pop();
+				for(i=0; i < ret.length; i++)
+				{
+					ret[i] += suffixes[s];
+				}
+				break;	
+			}
+		}
+		
+		
+		if(ret != undefined)
+		{
+			if(!in_ara(ret, parseAvro))
+			{
+				ret.push(parseAvro);
+			}
+		}
+		else
+		{
+			ret = [parseAvro];
+		}
 	}
 	ret.push(str);
 	return ret;
 	
+}
+
+function in_ara(ara, str)
+{
+	var i;
+	for(i=0; i<ara.length; i++)
+		if(ara[i] == str)
+			break;
+	return i < ara.length;
 }
 
 function hash(str)
@@ -131,7 +160,7 @@ function hash(str)
 	add "//" if you
 	*/
 	str = str.replace(/aa/g, 'a');	//don't use extra 'a' after 'a', like 'baan'
-	str = str.replace(/e/g, 'a');	//know the difference between 'e' and 'a'
+	//str = str.replace(/e/g, 'a');	//know the difference between 'e' and 'a'
 	str = str.replace(/c/g, 's');	//know the difference between 'c' and 's'
 	str = str.replace(/h/g, '');	//don't use extra 'h' and don't miss 'h'
 	//str = str.replace(/o/g, '');	//use 'o' perfectly
@@ -202,22 +231,15 @@ function sadakhata(elm){
 			var obj = getPos(elm.caret().start-2, elm.val());
 			var val = convert(elm.val().substr(obj.start, obj.end-obj.start+1))[0];
 			elm.val(elm.val().substr(0, obj.start) + val + elm.val().substr(obj.end+1));
-			
 			var t = obj.start + val.length + 1;
 			elm.caret(t, t);
-			
-				
 		}
 	}).autocomplete({
 		
 		minLength: 1,
 		
 		delay: 1,
-		
-		
-		
-		
-		
+
 		source: function( request, response ) {
 			var word = "";
 			for(var i=elm.caret().start-1; i>-1 && request.term[i] != ' '; i--)
@@ -228,14 +250,10 @@ function sadakhata(elm){
 			response(convert(word));
 		},
 		
-		
 		focus: function(event, ui) {
 			return false;
 		},
-		
-		
-		
-		
+
 		select: function( event, ui ) {
 			var obj = getPos(elm.caret().start - 1, this.value);
 			this.value = this.value.substr(0, obj.start) + ui.item.value + " " + this.value.substr(obj.end+1);
