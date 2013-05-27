@@ -111,7 +111,7 @@ function find(str)
 	}
 	else
 	{
-		var suffixes = {"ta":"টা", "tar":"টার", "ti":"টি", "tir":"টির", "khana":"খানা", "khani":"খানি", "gulo":"গুলো", "guli":"গুলি", "er":"ের", "na":"না"};
+		var suffixes = {"ta":"টা", "tar":"টার", "ti":"টি", "tir":"টির","tai":"টাই", "khana":"খানা", "khani":"খানি", "gulo":"গুলো", "guli":"গুলি", "er":"ের", "na":"না", "somuho":"সমূহ"};
 		for(var s in suffixes)
 		{
 			if(new RegExp(s + "$", "i").test(str))
