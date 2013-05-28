@@ -214,8 +214,12 @@ function convert(str)
 function getPos(end, str)
 {
 	var start = end;
-	while(start > 0 && str[start-1] != ' ')
+	while(start > 0 && str[start-1] != 32 && str[start-1] != 0)
+	{
 		start--;
+		//alert("->" + str[start] + "<-");
+	}
+		
 	return {"start":start, "end":end};
 }
 
@@ -244,10 +248,11 @@ function sadakhata(elm){
 
 		source: function( request, response ) {
 			var word = "";
-			for(var i=elm.caret().start-1; i>-1 && request.term[i] != ' '; i--)
+			for(var i=elm.caret().start-1; i>-1 && request.term[i] != ' ' && request.term[i] != '\n'; i--)
 			{
 				word = request.term[i] + word;
 			}
+			
 			
 			response(convert(word));
 		},
