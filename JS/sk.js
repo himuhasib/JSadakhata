@@ -32,6 +32,7 @@ head = new node();
 	
 function a(str, val)
 {
+	str = str.toLowerCase();
 	if(str.length == 0)
 	{
 		return;
@@ -111,7 +112,7 @@ function find(str)
 	}
 	else
 	{
-		var suffixes = {"ta":"টা", "tar":"টার", "ti":"টি", "tir":"টির","tai":"টাই", "khana":"খানা", "khani":"খানি", "gulo":"গুলো", "guli":"গুলি", "er":"ের", "na":"না", "somuho":"সমূহ"};
+		var suffixes = {"ta":"টা", "tar":"টার", "ti":"টি", "tir":"টির","tai":"টাই", "tuku":"টুকু", "tikei":"টিকেই", "tukuke":"টুকুকে", "tukukei":"টুকুকেই", "tukute":"টুকুতে", "tukutei":"টুকুতেই", "tukun":"টুকুন", "khana":"খানা", "khani":"খানি", "gulo":"গুলো", "guli":"গুলি", "gula":"গুলা", "er":"ের", "na":"না", "somuho":"সমূহ"};
 		for(var s in suffixes)
 		{
 			if(new RegExp(s + "$", "i").test(str))
@@ -140,7 +141,8 @@ function find(str)
 			ret = [parseAvro];
 		}
 	}
-	ret.push(str);
+	if(!in_ara(ret, str))
+		ret.push(str);
 	return ret;
 	
 }
