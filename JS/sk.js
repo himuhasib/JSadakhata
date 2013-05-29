@@ -183,7 +183,17 @@ function hash(str)
 	str = str.replace(/h/g, '');	//don't use extra 'h' and don't miss 'h'
 	//str = str.replace(/o/g, '');	//use 'o' perfectly
 	str = str.replace(/j/g, 'z');	//don't mess up 'j' and 'z'
-	return str;
+
+	var res = "";
+	for(var i=0; i<str.length; i++)
+	{
+		if(i > 0 && in_ara("ae", str[i]) && str[i] != str[i-1] && in_ara("aeiouw", str[i-1]) )
+			res = res + 'y' + str[i]; 
+		else
+			res = res + str[i];
+	}
+
+	return res;
 }
 
 function minimum_edit_dist(s, t)
