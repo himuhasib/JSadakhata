@@ -58,13 +58,29 @@ function find(str)
 {
 	if(str.length == 0)
 	{
-		return null;
+		return [];
+	}
+	var ret;
+	var i;
+	var lameSuffix = str.match(/[^a-zA-Z\^]+$/);
+
+	if(lameSuffix != null)
+	{
+		lameSuffix = OmicronLab.Avro.Phonetic.parse(lameSuffix[0]);
+		ret = find(str.substr(0, str.length - lameSuffix.length));
+		ret.pop();
+		for(i=0; i<ret.length; i++)
+		{
+			ret[i] += lameSuffix;
+		}
+		ret.push(str);
+		return ret;
 	}
 	
 	var hashed = hash(str.toLowerCase());
 	var parseAvro = OmicronLab.Avro.Phonetic.parse(str);
 	var T = head;
-	var i;
+	
 	
 	for(i=0; i<hashed.length; i++)
 	{
@@ -76,7 +92,7 @@ function find(str)
 		T = T.children[hashed[i]];				
 	}
 	
-	var ret;
+	
 	
 	if(i == hashed.length)
 	{
@@ -232,8 +248,9 @@ function sadakhata(elm){
 		}
 		
 	}).bind("keyup", function(event){
-		if(event.keyCode == 32 && $(this).val().length > 1)
+		if((event.keyCode == 32 || event.keyCode == 13) && $(this).val().length > 1)
 		{
+			elm.autocomplete("close");
 			var obj = getPos(elm.caret().start-2, elm.val());
 			var val = convert(elm.val().substr(obj.start, obj.end-obj.start+1))[0];
 			elm.val(elm.val().substr(0, obj.start) + val + elm.val().substr(obj.end+1));
