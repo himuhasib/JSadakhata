@@ -56,15 +56,22 @@ html {
 	<div class="navbar">
         <div class="navbar-inner">
         	<i class="brand">JSadakhata</i>
-        	<a href="http://sadakhata.github.io/JSadakhata/" target="_new"><button class="btn"><i class="icon-circle-arrow-down"></i>Donwload</button></a>
-			 <a href="https://github.com/sadakhata/JSadakhata" target="_new"><button class="btn"><i class="icon-plus-sign"></i>Contribute</button></a>
+        	<a href="http://sadakhata.github.io/JSadakhata/" target="_blank"><button class="btn"><i class="icon-circle-arrow-down"></i>Donwload</button></a>
+			 <a href="https://github.com/sadakhata/JSadakhata" target="_blank"><button class="btn"><i class="icon-plus-sign"></i>Contribute</button></a>
+             <button class="btn btn-success" id="sw_kmp">Show Keymap</button>
         </div>
     </div>
 
 
 	<center>
+        <div class="container" id="kmp">
+            <strong>JSadakhata used <a href="https://github.com/torifat/jsAvroPhonetic/" target="_blank">JsAvroPhonetic</a> parser. Which follows Avro keymap.</strong>
+            <br />
+            <img src="images/keymap.PNG" alt="avro keymap" class="img-polaroid">
+        </div>
         <h1>JSadakhata <small>JavaScript Implemention of sadakhata</small></h1>
-        <textarea id="tags" style="width:90%;" rows="16" placeholder="এখানে ইংলিশ ফন্টে বাংলা লিখুন..."></textarea>
+
+        <textarea id="write" style="width:90%;" rows="16" placeholder="এখানে ইংলিশ ফন্টে বাংলা লিখুন..."></textarea>
     </center>
 
     
@@ -73,9 +80,15 @@ html {
 
 <script type="text/javascript">
 $(function() {
-	sadakhata($("#tags"));
-	$("#tags").focus();
-	murad = 1;
+	sadakhata($("#write"));
+	$("#write").focus();
+    $("#kmp").slideToggle("slow");
+    $("#sw_kmp").click(function(){
+        $(this).html($(this).html()[0]=='S'?"Hide Keymap":"Show Keymap" );
+        $("#kmp").slideToggle("slow");
+        $("#write").focus();
+    })
+
 });
 </script>
 
