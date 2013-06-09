@@ -52,6 +52,12 @@ function find(str){
 	if(str.length == 0){
 		return ["",""];
 	}
+	var emoticon = {':o': ':O', ';p': ';p', ':)': ':)', ':D': ':D', ':p': ':p', 'B)': 'B)', ';P': ';P', ';D': ';D', 'B|': 'B|', ';)': ';)', ':P': ':P', ':v': ':v', ':s': ':s'};
+	if(str in emoticon)
+		return [emoticon[str]];
+
+
+
 	var ret;
 	var i;
 	var lameSuffix = str.match(/[^a-zA-Z]+$/);
@@ -187,8 +193,10 @@ function convert(str){
 }
 
 function getPos(end, str){
+	if(str[end] == ' ' || str[end] == '\n')
+		return {"start":end, "end":end};
 	var start = end;
-	while(start > 0 && str[start-1] != 32 && str[start-1] != 0){
+	while(start > 0 && str[start-1] != ' ' && str[start-1] != '\n'){
 		start--;
 	}
 	return {"start":start, "end":end};
@@ -205,10 +213,13 @@ function sadakhata(elm){
 		if((event.keyCode == 32 || event.keyCode == 13) && $(this).val().length > 1){
 			elm.autocomplete("close");
 			var obj = getPos(elm.caret().start-2, elm.val());
-			var val = convert(elm.val().substr(obj.start, obj.end-obj.start+1))[0];
-			elm.val(elm.val().substr(0, obj.start) + val + elm.val().substr(obj.end+1));
-			var t = obj.start + val.length + 1;
-			elm.caret(t, t);
+			
+			if((event.keyCode == 32 && elm.val()[obj.end + 1] == ' ') || (event.keyCode == 13 && elm.val()[obj.end + 1] == '\n')){
+				var val = convert(elm.val().substr(obj.start, obj.end-obj.start+1))[0];
+				elm.val(elm.val().substr(0, obj.start) + val + elm.val().substr(obj.end+1));
+				var t = obj.start + val.length + 1;
+				elm.caret(t, t);
+			}
 		}
 	}).autocomplete({
 		minLength: 1,
@@ -218,6 +229,7 @@ function sadakhata(elm){
 			for(var i=elm.caret().start-1; i>-1 && request.term[i] != ' ' && request.term[i] != '\n'; i--){
 				word = request.term[i] + word;
 			}
+			
 			response(convert(word));
 		},
 		focus: function(event, ui) {
